@@ -1,0 +1,118 @@
+﻿<Window x:Class="lab_04.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="DataBase" Height="600" Width="800">
+   
+
+    <Window.Resources>
+
+        <ControlTemplate x:Key="TextBoxErrorTemplate">
+            <DockPanel LastChildFill="True">
+                <TextBlock DockPanel.Dock="Bottom" Foreground="Red" FontSize="6pt" 
+                           Text="{Binding ElementName=MyAdorner,Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                <Border BorderBrush="Red" BorderThickness="1" Width="120" >
+                    <AdornedElementPlaceholder Name="MyAdorner" />
+                </Border>
+            </DockPanel>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid Name="GridPersonView">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" Name="GridPatientControl" 
+              HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="5*"  />
+                <RowDefinition Height="10*" />
+            </Grid.RowDefinitions>
+
+            <Label Name="LblLastName" Content="Last Name:" 
+               Grid.Row="0" Grid.Column="0" 
+               HorizontalAlignment="Right" />
+            <Label Name="LblName" Content="Name :"
+               Grid.Row="1" Grid.Column="0" 
+               HorizontalAlignment="Right" />
+            <Label Name="LblMobileNumber" Content="Email:"
+               Grid.Row="2" Grid.Column="0" 
+               HorizontalAlignment="Right" />
+            <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="36,0,-32,-6" Grid.Row="4" Grid.ColumnSpan="2"
+                        Grid.Column="0" />
+            <TextBox Name="TbxId" 
+                 Grid.Row="0" Grid.Column="1" 
+                 HorizontalAlignment="Left"
+                 Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+            </TextBox>
+            <TextBox Name="TbxLastName" 
+                     Grid.Row="0" Grid.Column="1" 
+                     HorizontalAlignment="Left" 
+                     Text="{Binding Path=Surname}" Width="56" Height="26" Margin="0.5,0,-32,0" VerticalAlignment="Top"/>
+            <TextBox Name="TbxName" 
+                     Grid.Row="1" Grid.Column="1" 
+                     HorizontalAlignment="Left" 
+                     Text="{Binding Path=Name}" Margin="0.5,0,-26,0" Width="56"/>
+            <TextBox Name="TbxEmail" 
+                      Grid.Row="2" Grid.Column="1" 
+                      HorizontalAlignment="Left" 
+                      Text="{Binding Path=Email}" Margin="0,0,-22,0" Width="56"/>
+
+            <Grid Name="GridBtns" 
+                  Grid.Row="4" Grid.ColumnSpan="2" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Name="BtnAdd" Content="Add"
+                    Grid.Column="0" 
+                    HorizontalAlignment="Left" 
+                    Command="{Binding AddPersonCmd}" Margin="7,28,0,-28" Grid.ColumnSpan="2" />
+                <Button Name="BtnEdit" Content="Edit"
+                        Grid.Column="2" 
+                        HorizontalAlignment="Center" 
+                        Command="{Binding EditPersonCmd}" Margin="7,28,-9,-28" />
+                <Button Name="BtnSave" Content="Save"
+                        Grid.Column="4" 
+                        HorizontalAlignment="Center" 
+                        Command="{Binding SavePersonCmd}" Margin="7,28,-9,-28" />
+                <Button Name="BtnDelete" Content="Delete"
+                        Grid.Column="1" 
+                        HorizontalAlignment="Right" 
+                        Command="{Binding DeletePersonCmd}" Margin="0,59,2,-59" Grid.ColumnSpan="3" />
+
+            </Grid>
+
+        </Grid>
+        <DataGrid Name="MainGrid" ItemsSource="{Binding Persons, Mode=OneWay}" SelectedItem="{Binding SelectedItem}" AutoGenerateColumns="False" Grid.Column="3" SelectionChanged="DataGrid_SelectionChanged" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Last name" Binding="{Binding Surname}"></DataGridTextColumn>
+                <DataGridTextColumn Header="First name" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="E-mail" Binding="{Binding Email}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Date of birth" Binding="{Binding Date}"></DataGridTextColumn>
+                <DataGridTextColumn Header="isAdult" Binding="{Binding IsAdult}" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="SunSign" Binding="{Binding SunSign}"  IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="ChineseSign" Binding="{Binding ChineseSign}" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="isBirthday" Binding="{Binding IsBirthday}" IsReadOnly="True"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+
+
+</Window>
